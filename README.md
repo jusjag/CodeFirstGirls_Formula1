@@ -10,8 +10,8 @@ Project included:
 Chosen dataset:
 Formula 1 races from year 1950, from Kaggle (source: https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020).
 Why this one?
-•	as a F1 fan I know how to move around these tables and know what that data actually means,
-•	since it's all public and well documented, I could double check the results of my queries online
+- as a F1 fan I know how to move around these tables and know what that data actually means,
+- since it's all public and well documented, I could double check the results of my queries online
 
 Step 1: Creating database and tables
 Database schema:
