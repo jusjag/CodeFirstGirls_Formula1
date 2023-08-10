@@ -13,8 +13,9 @@ Why this one?
 - as a F1 fan I know how to move around these tables and know what that data actually means,
 - since it's all public and well documented, I could double check the results of my queries online
 
-Step 1: Creating database and tables
+Step 1: Creating database and tables<br>
 Database schema:
+![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/F1_Schema.jpg)
 
 Step 2: Importing data:
 The main table contains over 25.000 rows. Oh, thank you Workbench for the import button!
