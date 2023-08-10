@@ -42,9 +42,26 @@ And just to play a little more, another view using the first one:<br>
 ![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/3.2.Subquery2-code-output.jpg)
 <br><br>
 
-## Step 5: Procedure - display end results for any chosen year?<br>
-![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/5.Procedure-code.jpg)
-<br><br>
+## Step 5: Procedure - display drivers championship for chosen year<br>
+```
+DELIMITER $$
+CREATE PROCEDURE DriverRank(IN YearInput CHAR(4))
+BEGIN
+Select CONCAT(D.Forename," ",D.Surname) as FullName, sum(Points) as Result
+FROM Results R
+INNER JOIN
+	(SELECT RaceID FROM RACES
+	WHERE Year = YearInput) Y
+	ON Y.RaceID=R.RaceID
+INNER JOIN 
+	Drivers D on R.DriverID=D.DriverID
+GROUP BY FullName
+ORDER BY Result DESC;
+END $$
+DELIMITER ;
+
+CALL DriverRank(2008);
+```
 ![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/5.Procedure-output.jpg)
 
 ## Step 6: Function - has the driver finished the race?<br>
