@@ -5,13 +5,14 @@ Project included:
 - Database of 5 connected tables;
 - Some analytic queries;
 - Custom view, function, stored procedure;
-- ... and also mandatory live presentation showing all of the above.
+- and mandatory live presentation showing all of the above.
 
 ## Chosen dataset:
-Formula 1 races from year 1950, from Kaggle (source: https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020).<br>
+Information about Formula 1 races from year 1950 to 2022 (I used only a part of available files)<br>
+Source: Kaggle (https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2023).<br>
 Why this one?
 - as a F1 fan I know how to move around these tables and know what that data actually means,
-- since it's all public and well documented, I could double check the results of my queries online
+- since it's all public and well documented, I could double check the results of my queries online.
 
 ## Step 1: Creating database and tables<br>
 Database schema:<br>
@@ -26,10 +27,42 @@ The main table is fully normalised and looks like this:<br>
 ![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/Results_Table.jpg)
 <br><br>
 Computers love it, humans hate it, so as the first step I created a more readable view:<br>
+```SQL
+CREATE OR REPLACE VIEW FriendlyResults AS
+SELECT 
+	R.ResultID,
+    Rc.CircuitName,
+    Rc.Year,
+    CONCAT(D.Forename," ",D.Surname) as Driver,
+    C.ConstructorName as Constructor,
+    R.grid as Started,
+    R.EndPosition as Ended,
+    S.End_Status,
+    R.points,
+    R.fastestLapTime,
+    R.fastestLapSpeed
+FROM Results R
+JOIN Races Rc on R.RaceID=Rc.RaceID
+JOIN Drivers D on R.DriverID=D.DriverID
+JOIN Constructors C on R.ConstructorID=C.ConstructorID
+JOIN Status S on R.StatusID=S.StatusID
+ORDER BY R.ResultID;
+```
 ![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/1.1.View1-output.jpg)
 
 And just to play a little more, another view using the first one:<br>
-<br>
+```SQL
+CREATE OR REPLACE VIEW LostGained AS
+SELECT 
+ResultID, CircuitName, Year, Driver, Started, Ended, 
+(CASE WHEN Ended - Started < 0 THEN "Gained position"
+WHEN Ended - STARTED = 0 THEN "Kept place"
+WHEN Ended - Started > 0 THEN "Lost position" END) AS Outcome,
+Started - Ended AS Place_Change,
+Points
+FROM FriendlyResults
+ORDER BY ResultID;
+```
 ![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/1.2.View2-code-output.jpg)
 <br><br>
 ## Step 4: Analytic queries<br>
@@ -43,7 +76,7 @@ And just to play a little more, another view using the first one:<br>
 <br><br>
 
 ## Step 5: Procedure - display drivers championship for chosen year<br>
-```
+```SQL
 DELIMITER $$
 CREATE PROCEDURE DriverRank(IN YearInput CHAR(4))
 BEGIN
@@ -65,13 +98,39 @@ CALL DriverRank(2008);
 ![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/5.Procedure-output.jpg)
 
 ## Step 6: Function - has the driver finished the race?<br>
-![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/4.Function-code.jpg)
+```SQL
+# FUNCTION: checking if the driver has finished the race
+# Note: Status "+ _Laps" also means that the driver finished.
+
+DELIMITER $$
+CREATE FUNCTION Finished(StatusInput VARCHAR(20))
+RETURNS VARCHAR(3)
+DETERMINISTIC
+BEGIN
+	DECLARE Finished VARCHAR(3);
+	CASE 
+    WHEN StatusInput = 1 THEN SET Finished = "Yes";
+    WHEN StatusInput IN (SELECT StatusID FROM Status WHERE End_Status LIKE '%Lap%') THEN SET Finished = "Yes";
+    ELSE SET Finished = "No";
+    END CASE;
+RETURN Finished;
+END $$
+DELIMITER ;
+
+# How does it work?
+SELECT R.ResultID, D.Forename, D.Surname, Rc.Circuitname, Rc.Date, Finished(R.StatusID) as Finished
+FROM Results R
+JOIN Drivers D on R.DriverID=D.DriverID
+JOIN Races RC on R.RaceID=Rc.RaceID
+ORDER BY R.ResultID;
+```
 <br>
-![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/4.Function-output.jpg)
+![function](https://raw.githubusercontent.com/jusjag/CodeFirstGirls_Formula1/main/Project_Screenshots/4.Function-output.jpg)
 
 ## Conclusion<br>
-The hardest part? Giving an online presentation, in english which I haven't spoken for a while... and that weird feeling when I was just speaking to my screen, not seeing the people I was talking to, and not being sure if they still hear/see me :)
-
-That's it!
-I learned a lot during this project. And learned even more while dealing with all the errors encountered :)
-It was fun!
+Despite having some previous SQL knowledge, I learned A LOT while making this project. <br>
+The hardest part? Giving an online presentation. Not only because I haven't spoken english for a while, but mainly because of that weird feeling when I was talking to people while not seeing or hearing them, just sitting alone and talking to my screen. It was certainly an interesting experience.<br>
+<br>
+But in the end, it was so fun! And all I could think of was "I WANT MORE" :)<br>
+<br>
+Thank you for reading!
