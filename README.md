@@ -48,9 +48,10 @@ JOIN Constructors C on R.ConstructorID=C.ConstructorID
 JOIN Status S on R.StatusID=S.StatusID
 ORDER BY R.ResultID;
 ```
+So now you can actually see the table content: the circuit, year, driver, constructor, start & end position, points etc.<br><br>
 ![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/1.1.View1-output.jpg)
 
-And just to play a little more, another view using the first one:<br>
+And just to play a little more, another view using the first one, showing if the driver has lost or gained the position during the race:<br>
 ```SQL
 CREATE OR REPLACE VIEW LostGained AS
 SELECT 
@@ -63,7 +64,7 @@ Points
 FROM FriendlyResults
 ORDER BY ResultID;
 ```
-![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/1.2.View2-code-output.jpg)
+![alt text](Project_Screenshots/1.3.View2-output.jpg)
 <br><br>
 ## Step 4: Analytic queries<br>
 ![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/2.1.Analysis1-code-output.jpg)
@@ -76,6 +77,7 @@ ORDER BY ResultID;
 <br><br>
 
 ## Step 5: Procedure - display drivers championship for chosen year<br>
+What this function does is simply calculating the sum of pounts for every driver for the given year then displaying them in descending order.<br>
 ```SQL
 DELIMITER $$
 CREATE PROCEDURE DriverRank(IN YearInput CHAR(4))
@@ -98,6 +100,7 @@ CALL DriverRank(2008);
 ![alt text](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/5.Procedure-output.jpg)
 
 ## Step 6: Function - has the driver finished the race?<br>
+This function gives information based on the status column, to include not only "finished" status, but also the "+ <number> Laps".<br><br>
 ```SQL
 # FUNCTION: checking if the driver has finished the race
 # Note: Status "+ _Laps" also means that the driver finished.
@@ -125,7 +128,7 @@ JOIN Races RC on R.RaceID=Rc.RaceID
 ORDER BY R.ResultID;
 ```
 <br>
-![function](https://raw.githubusercontent.com/jusjag/CodeFirstGirls_Formula1/main/Project_Screenshots/4.Function-output.jpg)
+![functionoutput](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/4.Function-output.jpg)
 
 ## Conclusion<br>
 Despite having some previous SQL knowledge, I learned A LOT while making this project. <br>
