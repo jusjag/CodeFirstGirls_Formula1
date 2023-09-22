@@ -128,12 +128,11 @@ JOIN Races RC on R.RaceID=Rc.RaceID
 ORDER BY R.ResultID;
 ```
 <br>
-![functionoutput](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/4.Function-output.jpg)
+![](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/4.Function-output.jpg)
 
 ## Conclusion<br>
 Despite having some previous SQL knowledge, I learned A LOT while making this project. <br>
-The hardest part? Giving an online presentation. Not only because I haven't spoken english for a while, but mainly because of that weird feeling when I was talking to people while not seeing or hearing them, just sitting alone and talking to my screen. It was certainly an interesting experience.<br>
-<br>
-But in the end, it was so fun! And all I could think of was "I WANT MORE" :)<br>
+The hardest part? Giving an online presentation. Not only because I haven't spoken english for a while, but mainly because It was my first time speaking online, without seeing or hearing the people I was talking to. Very strange feeling :)<br>
+But in the end, it was so fun! And all I could think of was "I WANT MORE"<br> So now it's time for me to work on much more advanced project.
 <br>
 Thank you for reading!
