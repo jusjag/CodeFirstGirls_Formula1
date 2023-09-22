@@ -128,7 +128,7 @@ JOIN Races RC on R.RaceID=Rc.RaceID
 ORDER BY R.ResultID;
 ```
 <br>
-![](https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/4.Function-output.jpg)
+<img src="https://github.com/jusjag/CodeFirstGirls_Formula1/blob/main/Project_Screenshots/4.Function-output.jpg">
 
 ## Conclusion<br>
 Despite having some previous SQL knowledge, I learned A LOT while making this project. <br>
